@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/container"
+    <com.glucode.about_you.about.views.ProfileCardView
+        android:id="@+id/profileCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical"
         android:paddingHorizontal="@dimen/padding_normal"
-        app:divider="@drawable/ic_filter"
-        app:dividerPadding="0dp"
-        app:showDividers="beginning|middle|end" />
+        />
 
-</androidx.core.widget.NestedScrollView>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_normal"
+            app:divider="@drawable/ic_filter"
+            app:dividerPadding="0dp"
+            app:showDividers="beginning|middle|end" />
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

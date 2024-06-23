@@ -24,12 +24,18 @@ class AboutFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.profileCardView.registerImagePicker(this)
+
         setUpQuestions()
     }
 
     private fun setUpQuestions() {
         val engineerName = arguments?.getString("name")
         val engineer = MockData.engineers.first { it.name == engineerName }
+
+        binding.profileCardView.name = engineer.name
+        binding.profileCardView.role = engineer.role
+        binding.profileCardView.image = engineer.defaultImageName
 
         engineer.questions.forEach { question ->
             val questionView = QuestionCardView(requireContext())
