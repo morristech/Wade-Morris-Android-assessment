@@ -2,6 +2,7 @@ package com.glucode.about_you.about.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.cardview.widget.CardView
@@ -54,14 +55,16 @@ class QuestionCardView @JvmOverloads constructor(
     }
 
     private fun onAnswerClick(view: View) {
-        if (!view.isSelected) {
-            binding.answers.children.filter { it.isSelected }.forEach {
-                it.isSelected = false
-            }
+        val answerCardViews = binding.answers.children.filterIsInstance<AnswerCardView>().toList()
+        val clickedIndex = answerCardViews.indexOf(view)
+        if (clickedIndex != -1) {
+            setSelection(clickedIndex)
         }
     }
 
-    private fun setSelection() {
-
+    private fun setSelection(index: Int) {
+        binding.answers.children.forEachIndexed { i, view ->
+            view.isSelected = (i == index)
+        }
     }
 }
