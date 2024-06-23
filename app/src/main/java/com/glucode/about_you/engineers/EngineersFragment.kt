@@ -12,6 +12,13 @@ import com.glucode.about_you.mockdata.MockData
 
 class EngineersFragment : Fragment() {
     private lateinit var binding: FragmentEngineersBinding
+    private lateinit var adapter: EngineersRecyclerViewAdapter
+
+    private var currentSort: SortBy = SortBy.NONE
+
+    enum class SortBy {
+        NONE, YEARS, COFFEES, BUGS
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,16 +37,29 @@ class EngineersFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_years) {
-            return true
+        currentSort = when (item.itemId) {
+            R.id.action_years -> SortBy.YEARS
+            R.id.action_coffees -> SortBy.COFFEES
+            R.id.action_bugs -> SortBy.BUGS
+            else -> SortBy.NONE
         }
+        sortEngineers()
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setUpEngineersList(engineers: List<Engineer>) {
-        binding.list.adapter = EngineersRecyclerViewAdapter(engineers) {
-            goToAbout(it)
+    private fun sortEngineers() {
+        val sortedEngineers = when (currentSort) {
+            SortBy.YEARS -> MockData.engineers.sortedBy { it.quickStats.years }
+            SortBy.COFFEES -> MockData.engineers.sortedBy { it.quickStats.coffees }
+            SortBy.BUGS -> MockData.engineers.sortedBy { it.quickStats.bugs }
+            else -> MockData.engineers
         }
+        adapter.updateEngineers(sortedEngineers)
+    }
+
+    private fun setUpEngineersList(engineers: List<Engineer>) {
+        adapter = EngineersRecyclerViewAdapter(engineers) { goToAbout(it) }
+        binding.list.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.list.addItemDecoration(dividerItemDecoration)
     }
