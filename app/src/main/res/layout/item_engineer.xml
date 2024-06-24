@@ -6,22 +6,22 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="@dimen/margin_normal"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person"
+        app:shapeAppearanceOverlay="@style/RoundedImageView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/name"
-        style="@style/Material.Body1.Medium.Dark"
+        style="@style/Material.Body1.Medium.Light"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/role"
-        style="@style/Material.Body2"
+        style="@style/Material.Body2.Light"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
