@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.glucode.about_you.R
 import com.glucode.about_you.databinding.FragmentEngineersBinding
+import com.glucode.about_you.engineers.enums.SortBy
 import com.glucode.about_you.engineers.models.Engineer
 import com.glucode.about_you.mockdata.MockData
 
@@ -16,9 +17,6 @@ class EngineersFragment : Fragment() {
 
     private var currentSort: SortBy = SortBy.NONE
 
-    enum class SortBy {
-        NONE, YEARS, COFFEES, BUGS
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,20 +36,31 @@ class EngineersFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         currentSort = when (item.itemId) {
-            R.id.action_years -> SortBy.YEARS
-            R.id.action_coffees -> SortBy.COFFEES
-            R.id.action_bugs -> SortBy.BUGS
+            R.id.action_years -> toggleSortOrder(SortBy.YEARS_ASC)
+            R.id.action_coffees -> toggleSortOrder(SortBy.COFFEES_ASC)
+            R.id.action_bugs -> toggleSortOrder(SortBy.BUGS_ASC)
             else -> SortBy.NONE
         }
         sortEngineers()
         return super.onOptionsItemSelected(item)
     }
 
+    private fun toggleSortOrder(sortBy: SortBy): SortBy {
+        return if (currentSort == sortBy) {
+            currentSort.toggle() // Toggle between ASC and DESC
+        } else {
+            sortBy // New sorting criteria
+        }
+    }
+
     private fun sortEngineers() {
         val sortedEngineers = when (currentSort) {
-            SortBy.YEARS -> MockData.engineers.sortedBy { it.quickStats.years }
-            SortBy.COFFEES -> MockData.engineers.sortedBy { it.quickStats.coffees }
-            SortBy.BUGS -> MockData.engineers.sortedBy { it.quickStats.bugs }
+            SortBy.YEARS_ASC -> MockData.engineers.sortedBy { it.quickStats.years }
+            SortBy.YEARS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.years }
+            SortBy.COFFEES_ASC -> MockData.engineers.sortedBy { it.quickStats.coffees }
+            SortBy.COFFEES_DESC -> MockData.engineers.sortedByDescending { it.quickStats.coffees }
+            SortBy.BUGS_ASC -> MockData.engineers.sortedBy { it.quickStats.bugs }
+            SortBy.BUGS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.bugs }
             else -> MockData.engineers
         }
         adapter.updateEngineers(sortedEngineers)

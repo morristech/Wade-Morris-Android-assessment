@@ -2,27 +2,32 @@ package com.glucode.about_you.engineers
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.glucode.about_you.databinding.ItemEngineerBinding
-import com.glucode.about_you.engineers.models.Engineer
 import coil.load
 import com.glucode.about_you.R
+import com.glucode.about_you.databinding.ItemEngineerBinding
+import com.glucode.about_you.engineers.models.Engineer
 
 class EngineersRecyclerViewAdapter(
     private var engineers: List<Engineer>,
-    private val onClick: (Engineer) -> Unit
+    private val onClick: (Engineer) -> Unit,
 ) : RecyclerView.Adapter<EngineersRecyclerViewAdapter.EngineerViewHolder>() {
-
     override fun getItemCount() = engineers.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EngineerViewHolder {
-        return EngineerViewHolder(
-            ItemEngineerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): EngineerViewHolder =
+        EngineerViewHolder(
+            ItemEngineerBinding.inflate(LayoutInflater.from(parent.context), parent, false),
         )
-    }
 
-    override fun onBindViewHolder(holder: EngineerViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: EngineerViewHolder,
+        position: Int,
+    ) {
         holder.bind(engineers[position], onClick)
     }
 
@@ -34,8 +39,14 @@ class EngineersRecyclerViewAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class EngineerViewHolder(private val binding: ItemEngineerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(engineer: Engineer, onClick: (Engineer) -> Unit) {
+    @VisibleForTesting
+    class EngineerViewHolder(
+        private val binding: ItemEngineerBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(
+            engineer: Engineer,
+            onClick: (Engineer) -> Unit,
+        ) {
             binding.name.text = engineer.name
             binding.role.text = engineer.role
             binding.root.setOnClickListener { onClick(engineer) }
@@ -48,13 +59,21 @@ class EngineersRecyclerViewAdapter(
     }
 }
 
-class EngineerDiffCallback(private val oldList: List<Engineer>, private val newList: List<Engineer>) : DiffUtil.Callback() {
+class EngineerDiffCallback(
+    private val oldList: List<Engineer>,
+    private val newList: List<Engineer>,
+) : DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
+
     override fun getNewListSize() = newList.size
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].name == newList[newItemPosition].name
-    }
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == newList[newItemPosition]
-    }
+
+    override fun areItemsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean = oldList[oldItemPosition].name == newList[newItemPosition].name
+
+    override fun areContentsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean = oldList[oldItemPosition] == newList[newItemPosition]
 }
