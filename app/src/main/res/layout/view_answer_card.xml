@@ -5,9 +5,9 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/Material.Body2.Light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
-        style="@style/Material.Body2.Light"/>
+        android:layout_margin="@dimen/margin_small" />
 
 </merge>
