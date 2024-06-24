@@ -9,8 +9,7 @@
         android:id="@+id/profileCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_normal"
-        />
+        android:paddingHorizontal="@dimen/padding_normal" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

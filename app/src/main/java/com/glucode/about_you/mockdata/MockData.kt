@@ -88,7 +88,9 @@ object MockData {
     )
 
     fun updateEngineerImage(engineerName: String, newImageName: String) {
-        val engineerToUpdate = engineers.find { it.name == engineerName }
-        engineerToUpdate?.defaultImageName = newImageName
+        engineers.firstOrNull { it.name == engineerName }?.let { engineer ->
+            val updatedEngineer = engineer.copy(defaultImageName = newImageName)
+            engineers[engineers.indexOf(engineer)] = updatedEngineer
+        }
     }
 }

@@ -17,11 +17,10 @@ class EngineersFragment : Fragment() {
 
     private var currentSort: SortBy = SortBy.NONE
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentEngineersBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
@@ -29,54 +28,60 @@ class EngineersFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_engineers, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        currentSort = when (item.itemId) {
-            R.id.action_years -> toggleSortOrder(SortBy.YEARS_ASC)
-            R.id.action_coffees -> toggleSortOrder(SortBy.COFFEES_ASC)
-            R.id.action_bugs -> toggleSortOrder(SortBy.BUGS_ASC)
-            else -> SortBy.NONE
-        }
+        currentSort =
+            when (item.itemId) {
+                R.id.action_years -> toggleSortOrder(SortBy.YEARS_ASC)
+                R.id.action_coffees -> toggleSortOrder(SortBy.COFFEES_ASC)
+                R.id.action_bugs -> toggleSortOrder(SortBy.BUGS_ASC)
+                else -> SortBy.NONE
+            }
         sortEngineers()
         return super.onOptionsItemSelected(item)
     }
 
-    private fun toggleSortOrder(sortBy: SortBy): SortBy {
-        return if (currentSort == sortBy) {
+    private fun toggleSortOrder(sortBy: SortBy): SortBy =
+        if (currentSort == sortBy) {
             currentSort.toggle() // Toggle between ASC and DESC
         } else {
             sortBy // New sorting criteria
         }
-    }
 
     private fun sortEngineers() {
-        val sortedEngineers = when (currentSort) {
-            SortBy.YEARS_ASC -> MockData.engineers.sortedBy { it.quickStats.years }
-            SortBy.YEARS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.years }
-            SortBy.COFFEES_ASC -> MockData.engineers.sortedBy { it.quickStats.coffees }
-            SortBy.COFFEES_DESC -> MockData.engineers.sortedByDescending { it.quickStats.coffees }
-            SortBy.BUGS_ASC -> MockData.engineers.sortedBy { it.quickStats.bugs }
-            SortBy.BUGS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.bugs }
-            else -> MockData.engineers
-        }
+        val sortedEngineers =
+            when (currentSort) {
+                SortBy.YEARS_ASC -> MockData.engineers.sortedBy { it.quickStats.years }
+                SortBy.YEARS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.years }
+                SortBy.COFFEES_ASC -> MockData.engineers.sortedBy { it.quickStats.coffees }
+                SortBy.COFFEES_DESC -> MockData.engineers.sortedByDescending { it.quickStats.coffees }
+                SortBy.BUGS_ASC -> MockData.engineers.sortedBy { it.quickStats.bugs }
+                SortBy.BUGS_DESC -> MockData.engineers.sortedByDescending { it.quickStats.bugs }
+                else -> MockData.engineers
+            }
         adapter.updateEngineers(sortedEngineers)
     }
 
     private fun setUpEngineersList(engineers: List<Engineer>) {
         adapter = EngineersRecyclerViewAdapter(engineers) { goToAbout(it) }
         binding.list.adapter = adapter
-        val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        val dividerItemDecoration =
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         binding.list.addItemDecoration(dividerItemDecoration)
     }
 
     private fun goToAbout(engineer: Engineer) {
-        val bundle = Bundle().apply {
-            putString("name", engineer.name)
-        }
+        val bundle =
+            Bundle().apply {
+                putString("name", engineer.name)
+            }
         findNavController().navigate(R.id.action_engineersFragment_to_aboutFragment, bundle)
     }
 }
